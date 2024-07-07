@@ -1,7 +1,11 @@
 "use client";
 import { signIn, signOut } from "next-auth/react";
 import { Button } from "@/app/_components/ui/button";
-import { Avatar, AvatarImage } from "@/app/_components/ui/avatar";
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "@/app/_components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +18,7 @@ import {
 import { type Session } from "next-auth";
 
 import { LogOut } from "lucide-react";
+import { UserRound } from "lucide-react";
 
 interface LoginAvatarProps {
   session: Session | null;
@@ -25,8 +30,20 @@ const LoginAvatar: React.FC<LoginAvatarProps> = ({ session }) => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar>
-            {session?.user.image && (
-              <AvatarImage src={session.user.image ?? undefined} />
+            {session?.user.image ? (
+              <AvatarImage
+                src={session.user.image}
+                alt={session.user.name ?? "User avatar"}
+                onLoadingStatusChange={(status) => {
+                  if (status === "error") {
+                    console.error("Failed to load avatar image");
+                  }
+                }}
+              />
+            ) : (
+              <AvatarFallback>
+                <UserRound className="h-6 w-6" />
+              </AvatarFallback>
             )}
           </Avatar>
         </DropdownMenuTrigger>

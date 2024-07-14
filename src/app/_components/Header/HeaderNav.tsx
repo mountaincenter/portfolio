@@ -4,7 +4,8 @@ import NavLinks from "@/components/common/NavLinks";
 const HeaderNav: React.FC = () => {
   const navItems = [
     { label: "Timer", path: "/timer" },
-    { label: "Torello", path: "/torello" },
+    { label: "Trello", path: "/trello" },
+    { label: "TrelloLike", path: "/trelloLike" },
     { label: "BodyFat", path: "/bodyFat" },
   ];
 

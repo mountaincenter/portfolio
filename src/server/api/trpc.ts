@@ -32,7 +32,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
   return {
     db,
     session,
-    ...opts,
+    headers: opts.headers,
   };
 };
 

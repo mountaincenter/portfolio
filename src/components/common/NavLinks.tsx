@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavTextAtom } from "../../app/_components/atoms/Text/NavTextAtom";
+import { NavTextAtom } from "@/app/_components/atoms/Text/NavTextAtom";
 
 interface NavLinkItem {
   label: string;

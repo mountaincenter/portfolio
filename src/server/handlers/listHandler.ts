@@ -1,4 +1,4 @@
-import { PrismaClient, List, Task } from "@prisma/client";
+import { PrismaClient, type List } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -6,7 +6,11 @@ export const listHandler = {
   async getAllLists(): Promise<List[]> {
     return await prisma.list.findMany({
       include: {
-        tasks: true,
+        tasks: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
   },

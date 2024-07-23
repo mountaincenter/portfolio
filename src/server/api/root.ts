@@ -1,7 +1,7 @@
 import { boardRouter } from "./routers/board";
 import { listRouter } from "./routers/list";
 import { postRouter } from "./routers/post";
-import { taskRouter } from "./routers/tasks";
+import { taskRouter } from "./routers/task";
 
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 

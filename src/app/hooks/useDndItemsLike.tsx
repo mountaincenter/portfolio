@@ -1,16 +1,19 @@
 import { useState, useCallback } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
-import type { Task, Status } from "../_components/TrelloLike/interface";
+import type { Task, User, Status } from "@prisma/client";
 
-export const useDndItems = (initialItems: Record<Status, Task[]>) => {
-  const [items, setItems] = useState<Record<Status, Task[]>>(initialItems);
+export const useDndItems = (
+  initialItems: Record<string, (Task & { user: User })[]>,
+) => {
+  const [items, setItems] =
+    useState<Record<string, (Task & { user: User })[]>>(initialItems);
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const findContainer = useCallback(
-    (id: string): Status => {
+    (id: string): string => {
       for (const status in items) {
-        if (items[status as Status].some((task) => task.id.toString() === id)) {
-          return status as Status;
+        if (items[status]?.some((task) => task.id.toString() === id)) {
+          return status;
         }
       }
       throw new Error(`Container not found for id: ${id}`);
@@ -36,6 +39,8 @@ export const useDndItems = (initialItems: Record<Status, Task[]>) => {
       setItems((prev) => {
         const activeItems = prev[activeContainer];
         const overItems = prev[overContainer];
+
+        if (!activeItems || !overItems) return prev;
 
         const activeIndex = activeItems.findIndex(
           (task) => task.id.toString() === activeId,
@@ -88,10 +93,15 @@ export const useDndItems = (initialItems: Record<Status, Task[]>) => {
         return;
       }
 
-      const activeIndex = items[activeContainer].findIndex(
+      const activeItems = items[activeContainer];
+      const overItems = items[overContainer];
+
+      if (!activeItems || !overItems) return;
+
+      const activeIndex = activeItems.findIndex(
         (task) => task.id.toString() === activeId,
       );
-      const overIndex = items[overContainer].findIndex(
+      const overIndex = overItems.findIndex(
         (task) => task.id.toString() === overId,
       );
 

@@ -5,16 +5,18 @@ import SortableItem from "./SortableItem";
 import { Plus } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardHeader, CardContent } from "../ui/card";
-import type { Task } from "./interface";
+import type { Task, User } from "@prisma/client";
 
-const SortableContainer = ({
+interface SortableContainerProps {
+  id: string;
+  items: (Task & { user: User })[];
+  label: string;
+}
+
+const SortableContainer: React.FC<SortableContainerProps> = ({
   id,
   items,
   label,
-}: {
-  id: string;
-  items: Task[];
-  label: string;
 }) => {
   const { setNodeRef } = useDroppable({
     id,
@@ -35,7 +37,7 @@ const SortableContainer = ({
           items={items.map((task) => task.id.toString())}
           strategy={rectSortingStrategy}
         >
-          {items.map((task: Task) => (
+          {items.map((task: Task & { user: User }) => (
             <SortableItem key={task.id} task={task} />
           ))}
         </SortableContext>

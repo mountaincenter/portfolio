@@ -2,9 +2,9 @@ import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Item from "./Item";
-import type { Task } from "./interface";
+import type { Task, User } from "@prisma/client";
 
-const SortableItem = ({ task }: { task: Task }) => {
+const SortableItem = ({ task }: { task: Task & { user: User } }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: task.id.toString() });
 

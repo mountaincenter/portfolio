@@ -20,7 +20,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
+      <body className="flex min-h-screen flex-col items-center justify-center">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -29,8 +29,12 @@ export default async function RootLayout({
         >
           <TRPCReactProvider>
             <>
-              <Header session={session} />
-              {children}
+              <div className="flex w-full justify-center">
+                <Header session={session} />
+              </div>
+              <div className="flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-4">
+                {children}
+              </div>
             </>
           </TRPCReactProvider>
         </ThemeProvider>

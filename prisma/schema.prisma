@@ -60,6 +60,7 @@ model User {
     sessions      Session[]
     posts         Post[]
     tasks         Task[]
+    timeLogs      TimeLog[]
 }
 
 model VerificationToken {
@@ -108,4 +109,25 @@ enum Status {
     IN_PROGRESS
     REVIEW
     DONE
+}
+
+model Tag {
+    id String @id @default(cuid())
+    name String
+    timeLogs TimeLog[] @relation("TagTimeLogs")
+}
+
+model TimeLog {
+    id String @id @default(cuid())
+    startTime DateTime
+    stopTime DateTime
+    recordTime Int
+    description String?
+    category String?
+    tags Tag[] @relation("TagTimeLogs")
+    status String?
+    isActive Boolean @default(true)
+    createdAt DateTime @default(now())
+    userId String
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

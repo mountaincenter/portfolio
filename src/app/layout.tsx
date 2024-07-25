@@ -1,8 +1,6 @@
 import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
-import { TRPCReactProvider } from "@/trpc/react";
-import { ThemeProvider } from "@/components/theme-provider";
-import Header from "./_components/Header/Header";
+import SessionProviderWrapper from "../components/SessionProviderWrapper";
 import { getServerAuthSession } from "@/server/auth";
 
 export const metadata = {
@@ -21,23 +19,9 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className="flex min-h-screen flex-col items-center justify-center">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <TRPCReactProvider>
-            <>
-              <div className="flex w-full justify-center">
-                <Header session={session} />
-              </div>
-              <div className="flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-4">
-                {children}
-              </div>
-            </>
-          </TRPCReactProvider>
-        </ThemeProvider>
+        <SessionProviderWrapper session={session}>
+          {children}
+        </SessionProviderWrapper>
       </body>
     </html>
   );

@@ -61,6 +61,7 @@ model User {
     posts         Post[]
     tasks         Task[]
     timeLogs      TimeLog[]
+    healthMetrics HealthMetrics[]
 }
 
 model VerificationToken {
@@ -130,4 +131,15 @@ model TimeLog {
     createdAt DateTime @default(now())
     userId String
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model HealthMetrics {
+    id       Int      @id @default(autoincrement())
+    weight   Float
+    bodyFat  Float?
+    measurementDate DateTime
+    userId   String
+    user     User     @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }

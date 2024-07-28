@@ -3,15 +3,24 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import KeepRecordButton from "./KeepRecordButton";
 import useRecord from "../../hooks/useRecord";
+import TimeLogTable from "./TimeLogTable";
+import { useTimeLogMutation } from "@/app/hooks/useTimeLogMutation";
 
 const TimeRecord: React.FC = () => {
   const { data: session, status } = useSession();
+  const { timeLogs, isLoading } = useTimeLogMutation();
 
   // レコード管理用のカスタムフックを使用
-  const { isRecording, elapsedTime, progress, startRecording, stopRecording } =
-    useRecord();
+  const {
+    isRecording,
+    startTime,
+    stopTime,
+    elapsedTime,
+    progress,
+    startRecording,
+    stopRecording,
+  } = useRecord();
 
-  const isLoading = status === "loading";
   const isUnauthenticated = status === "unauthenticated";
   const isAuthenticated = status === "authenticated";
 
@@ -32,6 +41,12 @@ const TimeRecord: React.FC = () => {
           progress={progress}
           startRecording={startRecording}
           stopRecording={stopRecording}
+          isLoading={isLoading}
+        />
+        <TimeLogTable
+          timeLogs={timeLogs}
+          startTime={startTime}
+          stopTime={stopTime}
           isLoading={isLoading}
         />
       </div>

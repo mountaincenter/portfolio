@@ -16,7 +16,7 @@ export const useTimeLogMutation = () => {
         description: "記録に成功しました",
         duration: 3000,
       });
-      setTimeout(() => router.push("/timer"), 3000); // reloadの代わりにrouter.pushを使用
+      setTimeout(() => router.refresh(), 3000); // reloadの代わりにrouter.pushを使用
     },
     onError: () => {
       toast({
@@ -34,7 +34,7 @@ export const useTimeLogMutation = () => {
         description: "更新に成功しました",
         duration: 3000,
       });
-      setTimeout(() => router.push("/timer"), 3000); // reloadの代わりにrouter.pushを使用
+      setTimeout(() => router.refresh(), 3000); // reloadの代わりにrouter.pushを使用
     },
     onError: () => {
       toast({
@@ -52,7 +52,7 @@ export const useTimeLogMutation = () => {
         description: "削除に成功しました",
         duration: 3000,
       });
-      setTimeout(() => router.push("/timer"), 3000); // reloadの代わりにrouter.pushを使用
+      setTimeout(() => router.refresh(), 3000); // reloadの代わりにrouter.pushを使用
     },
     onError: () => {
       toast({

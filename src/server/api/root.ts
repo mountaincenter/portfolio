@@ -3,6 +3,7 @@ import { listRouter } from "./routers/list";
 import { postRouter } from "./routers/post";
 import { taskRouter } from "./routers/task";
 import { timeLogRouter } from "./routers/timeLog";
+import { healthMetricsRouter } from "./routers/healthMetrics";
 
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 
@@ -17,6 +18,7 @@ export const appRouter = createTRPCRouter({
   post: postRouter,
   task: taskRouter,
   timeLog: timeLogRouter,
+  healthMetricsRouter: healthMetricsRouter,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

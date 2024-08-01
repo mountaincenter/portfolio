@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { TableCell } from "../ui/table";
 import {
@@ -41,6 +41,8 @@ const TimeLogForm: React.FC<TimeLogFormProps> = ({
     },
   });
 
+  const formRef = useRef<HTMLDivElement>(null);
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const updateStartTime: Date = fromHmmToDate(
       data.startTime,
@@ -82,6 +84,20 @@ const TimeLogForm: React.FC<TimeLogFormProps> = ({
     reset({ startTime: inputStartTime, stopTime: inputStopTime });
   }, [inputStartTime, inputStopTime, reset]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (formRef.current && !formRef.current.contains(event.target as Node)) {
+        setIsEdit(false);
+        setSelectedEdit(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setIsEdit, setSelectedEdit]);
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -112,10 +128,9 @@ const TimeLogForm: React.FC<TimeLogFormProps> = ({
     return formatStopTimeWithDayExtension(startDate, stopDate);
   };
 
-  console.log(isEdit);
   return (
-    <>
-      <TableCell>
+    <div ref={formRef}>
+      <TableCell className="text-right">
         {isEdit ? (
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
@@ -136,7 +151,7 @@ const TimeLogForm: React.FC<TimeLogFormProps> = ({
           </span>
         )}
       </TableCell>
-      <TableCell>
+      <TableCell className="text-right">
         {isEdit ? (
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
@@ -157,7 +172,7 @@ const TimeLogForm: React.FC<TimeLogFormProps> = ({
           </span>
         )}
       </TableCell>
-    </>
+    </div>
   );
 };
 

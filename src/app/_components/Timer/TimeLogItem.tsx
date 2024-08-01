@@ -31,7 +31,7 @@ const TimeLogItem: React.FC<TimeLogItemProps> = ({ timeLog }) => {
       <TableCell className="text-right">
         {fromMinutesToHHmm(timeLog.recordTime)}
       </TableCell>
-      <TableCell>終了</TableCell>
+      <TableCell className="text-right">終了</TableCell>
     </TableRow>
   );
 };

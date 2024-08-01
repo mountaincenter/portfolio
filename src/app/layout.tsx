@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import SessionProviderWrapper from "../components/SessionProviderWrapper";
 import { getServerAuthSession } from "@/server/auth";
+import { Toaster } from "@/app/_components/ui/toaster";
 
 export const metadata = {
   title: "Create T3 App",
@@ -21,6 +22,7 @@ export default async function RootLayout({
       <body className="flex min-h-screen flex-col items-center justify-center">
         <SessionProviderWrapper session={session}>
           {children}
+          <Toaster />
         </SessionProviderWrapper>
       </body>
     </html>

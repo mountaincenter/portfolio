@@ -1,9 +1,5 @@
 import { z } from "zod";
-import {
-  createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-} from "@/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { healthMetricsHandler } from "@/server/handlers/healthMetricsHandler";
 
 // Health Metrics の入力バリデーションスキーマを定義
@@ -14,46 +10,34 @@ const healthMetricsSchema = z.object({
   userId: z.string(),
 });
 
+const healthMetricsUpdateSchema = z.object({
+  id: z.number(),
+  data: healthMetricsSchema.omit({ userId: true }),
+});
+
 export const healthMetricsRouter = createTRPCRouter({
-  getAllHealthMetrics: publicProcedure.query(async () => {
-    return await healthMetricsHandler.getAllHealthMetrics();
+  list: protectedProcedure.query(async ({ ctx }) => {
+    return await healthMetricsHandler.list(ctx.session.user.id);
   }),
 
-  getHealthMetrics: publicProcedure
-    .input(z.object({ id: z.number() }))
-    .query(async ({ input }) => {
-      return await healthMetricsHandler.getHealthMetrics(input.id);
+  create: protectedProcedure
+    .input(healthMetricsSchema.omit({ userId: true }))
+    .mutation(async ({ ctx, input }) => {
+      return await healthMetricsHandler.create({
+        ...input,
+        userId: ctx.session.user.id,
+      });
     }),
 
-  getHealthMetricsByUserId: protectedProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(({ input }) => {
-      return healthMetricsHandler.getHealthMetricsByUserId(input.userId);
-    }),
-
-  createHealthMetrics: publicProcedure
-    .input(healthMetricsSchema)
+  update: protectedProcedure
+    .input(healthMetricsUpdateSchema)
     .mutation(async ({ input }) => {
-      return await healthMetricsHandler.createHealthMetrics(input);
+      return await healthMetricsHandler.update(input.id, input.data);
     }),
 
-  updateHealthMetrics: publicProcedure
-    .input(
-      z.object({
-        id: z.number(),
-        data: healthMetricsSchema,
-      }),
-    )
-    .mutation(async ({ input }) => {
-      return await healthMetricsHandler.updateHealthMetrics(
-        input.id,
-        input.data,
-      );
-    }),
-
-  deleteHealthMetrics: publicProcedure
+  delete: protectedProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
-      return await healthMetricsHandler.deleteHealthMetrics(input.id);
+      return await healthMetricsHandler.delete(input.id);
     }),
 });

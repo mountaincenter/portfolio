@@ -1,55 +1,63 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { api } from "@/trpc/react";
-import { type HealthMetrics } from "@prisma/client";
+import React from "react";
+import DaySelector from "./DaySelector";
+import useDateSelection from "@/app/hooks/useDateSelection";
+import { isSameDay } from "date-fns";
+import type { HealthMetrics, User } from "@prisma/client";
 
-const HealthMetricsStats: React.FC = () => {
-  const { data: session, status } = useSession();
-  const [healthMetrics, setHealthMetrics] = useState<HealthMetrics | null>(
-    null,
+interface HealthMetricsStatsProps {
+  healthMetrics: HealthMetrics[];
+  user: User | null | undefined;
+}
+
+const HealthMetricsStats: React.FC<HealthMetricsStatsProps> = ({
+  healthMetrics,
+  user,
+}) => {
+  const measurementDates = healthMetrics.map(
+    (healthMetric) => new Date(healthMetric.measurementDate),
   );
 
-  useEffect(() => {
-    const fetchHealthMetrics = async () => {
-      if (session?.user?.id) {
-        try {
-          const data = (await api.healthMetrics.getHealthMetricsByUserId.query({
-            userId: session.user.id,
-          })) as HealthMetrics;
-          setHealthMetrics(data);
-        } catch (error) {
-          console.error("Failed to fetch health metrics:", error);
-        }
-      }
-    };
+  const { selectedDay, handleDayChange } = useDateSelection(measurementDates);
 
-    void fetchHealthMetrics();
-  }, [session]);
+  const selectedHealthMetric = healthMetrics.find((healthMetric) =>
+    isSameDay(new Date(healthMetric.measurementDate), selectedDay),
+  );
 
-  if (status === "loading") {
-    return <div>Loading...</div>;
+  if (!selectedHealthMetric || !user) {
+    return <div>No health metrics available.</div>;
   }
 
-  if (status === "unauthenticated") {
-    return <div>Please sign in to access this feature.</div>;
-  }
+  const height: number | null = user.height;
+  const bmi =
+    height !== null
+      ? (selectedHealthMetric.weight / (height / 100) ** 2).toFixed(2)
+      : "-";
 
   return (
     <div>
-      {healthMetrics && session ? (
-        <div>
-          <h2>{session.user?.name}&apos;s Health Metrics</h2>
-          <p>Weight: {healthMetrics.weight}</p>
-          <p>Body Fat: {healthMetrics.bodyFat}</p>
-          <p>
-            Measurement Date:{" "}
-            {new Date(healthMetrics.measurementDate).toDateString()}
-          </p>
+      <DaySelector
+        onDayChange={handleDayChange}
+        selectedDay={selectedDay}
+        measurementDates={measurementDates}
+      />
+      <div className="flex items-center justify-between p-4">
+        <div className="mr-2 flex flex-col items-center">
+          <div className="text-sm">体脂肪率</div>
+          <div className="text-lg font-semibold">
+            {selectedHealthMetric.bodyFat?.toFixed(2) ?? "-"}%
+          </div>
         </div>
-      ) : (
-        <div>No health metrics available.</div>
-      )}
+        <div className="mx-2 flex flex-col items-center">
+          <div className="text-3xl font-bold text-blue-600">
+            {selectedHealthMetric.weight.toFixed(2)} kg
+          </div>
+          <div className="text-sm">体重</div>
+        </div>
+        <div className="ml-2 flex flex-col items-center">
+          <div className="text-sm ">BMI</div>
+          <div className="text-lg font-semibold">{bmi}</div>
+        </div>
+      </div>
     </div>
   );
 };

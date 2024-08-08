@@ -62,6 +62,7 @@ model User {
     tasks         Task[]
     timeLogs      TimeLog[]
     healthMetrics HealthMetrics[]
+    height        Float?
 }
 
 model VerificationToken {

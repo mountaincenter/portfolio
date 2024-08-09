@@ -14,10 +14,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/app/_components/ui/dropdown-menu";
+import Link from "next/link";
 
 import { type Session } from "next-auth";
 
-import { LogOut } from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
 import { UserRound } from "lucide-react";
 
 interface LoginAvatarProps {
@@ -50,6 +51,12 @@ const LoginAvatar: React.FC<LoginAvatarProps> = ({ session }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{session?.user.name}</DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link href="/settings">
+              <Settings className="mr-2 h-4 w-4" />
+              <span>Settings</span>
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => signOut()}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Sign Out</span>

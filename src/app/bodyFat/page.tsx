@@ -4,15 +4,16 @@ import { useSession } from "next-auth/react";
 import HealthMetricsStats from "@/app/_components/BodyFat/HealthMetricsStats";
 import CreateHealthMetrics from "@/app/_components/BodyFat/CreateHealthMetrics";
 import HealthMetricsManagement from "@/app/_components/BodyFat/HealthMetricsManagement";
-import { api } from "@/trpc/react";
 import LoadingSpinner from "@/components/LoadingSpinner";
+
+import { useUserMutation } from "../hooks/useUserMutation";
+import { useHealthMetricsMutation } from "../hooks/useHealthMetricsMutation";
 
 const Page = () => {
   const { status } = useSession();
-  const { data: healthMetrics = [], isLoading: healthMetricsLoading } =
-    api.healthMetrics.list.useQuery();
-  const { data: user, isLoading: userLoading } =
-    api.user.getUserById.useQuery();
+  const { healthMetrics, isLoading: healthMetricsLoading } =
+    useHealthMetricsMutation();
+  const { user, isLoading: userLoading } = useUserMutation();
 
   const isLoading = status === "loading" || healthMetricsLoading || userLoading;
 

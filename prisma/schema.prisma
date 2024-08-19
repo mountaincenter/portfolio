@@ -73,43 +73,23 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model Board {
-    id Int @id @default(autoincrement())
-    title String
-    lists List[]
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-model List {
-    id Int @id @default(autoincrement())
-    title String
-    boardId Int
-    board Board @relation(fields: [boardId], references: [id])
-    tasks Task[]
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
 
 model Task {
     id         Int      @id @default(autoincrement())
     title      String
     description String?
     dueDate    DateTime?
-    status     Status   @default(TODO)
+    status     Status   @default(IMCOMPLETE)
     priority   Int      @default(0)
     userId     String
-    listId     Int
     user       User     @relation(fields: [userId], references: [id])
-    list       List     @relation(fields: [listId], references: [id])
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
 }
 
 enum Status {
-    TODO
-    IN_PROGRESS
-    REVIEW
+    PROGRESS
+    IMCOMPLETE
     DONE
 }
 

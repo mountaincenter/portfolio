@@ -79,7 +79,7 @@ model Task {
     title      String
     description String?
     dueDate    DateTime?
-    status     Status   @default(IMCOMPLETE)
+    status     Status   @default(INCOMPLETE)
     priority   Int      @default(0)
     userId     String
     user       User     @relation(fields: [userId], references: [id])
@@ -89,7 +89,7 @@ model Task {
 
 enum Status {
     PROGRESS
-    IMCOMPLETE
+    INCOMPLETE
     DONE
 }
 

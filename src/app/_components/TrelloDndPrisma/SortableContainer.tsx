@@ -15,7 +15,7 @@ import SortableContainer from "./SortableContainer";
 import type { Task, User, Status } from "@prisma/client";
 import { useTaskMutation } from "@/app/hooks/useTaskMutation";
 
-const statuses: (Status | "ALL")[] = ["ALL", "IMCOMPLETE", "PROGRESS", "DONE"];
+const statuses: (Status | "ALL")[] = ["ALL", "INCOMPLETE", "PROGRESS", "DONE"];
 
 const Page = () => {
   const { tasks } = useTaskMutation();

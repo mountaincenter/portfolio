@@ -23,7 +23,7 @@ const Item: React.FC<ItemProps> = ({ task }) => {
       statusValue.state = "対応中";
       statusValue.color = "blue";
       break;
-    case "IMCOMPLETE":
+    case "INCOMPLETE":
       statusValue.state = "未対応";
       statusValue.color = "gray";
   }

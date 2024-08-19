@@ -12,6 +12,7 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates, arrayMove } from "@dnd-kit/sortable";
 import SortableContainer from "./SortableContainer";
+import CreateTaskForm from "./CreateTaskForm";
 import { type User, type Task, type Status } from "./types";
 
 const user: User = { id: "1", name: "testuser" };
@@ -105,9 +106,16 @@ const Page = () => {
     }
   };
 
+  const addTask = (newTask: Task) => {
+    setTaskList((prev) => [...prev, newTask]);
+  };
+
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
-      <SortableContainer key={"ALL"} taskList={taskList} label={"ALL"} />
+      <div>
+        <SortableContainer key={"ALL"} taskList={taskList} label={"ALL"} />
+        <CreateTaskForm onAddTask={addTask} currentUser={user} />
+      </div>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}

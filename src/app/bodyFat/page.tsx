@@ -27,7 +27,7 @@ const Page = () => {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center py-2">
-      <div className="mt-5 w-full max-w-xl items-center justify-center">
+      <div className="mt-5 w-full items-center justify-center">
         <div className="w-full rounded-lg px-8 py-6 shadow-md">
           <HealthMetricsStats healthMetrics={healthMetrics} user={user} />
           <CreateHealthMetrics
@@ -35,7 +35,7 @@ const Page = () => {
             initialMetrics={healthMetrics[0]}
           />
         </div>
-        <div className="mt-5 w-full max-w-xl items-center justify-center">
+        <div className="mt-5 w-full items-center justify-center">
           <div className="w-full rounded-lg px-8 py-6 shadow-md">
             <HealthMetricsManagement
               healthMetrics={healthMetrics}

@@ -4,11 +4,9 @@ import TimeRecord from "../_components/Timer/TimeRecord";
 
 const Page = () => {
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center">
-      <div className="mb-4 flex items-center justify-center">
+    <div className="relative flex h-screen w-screen items-center justify-center">
+      <div className="absolute top-1/2 -translate-y-1/2 transform">
         <TimeDisplay />
-      </div>
-      <div className="flex items-center justify-center">
         <TimeRecord />
       </div>
     </div>

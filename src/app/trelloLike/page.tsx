@@ -12,7 +12,7 @@ const Page = async () => {
   console.log(lists);
 
   return (
-    <div className="flex h-screen flex-col bg-background text-foreground dark:bg-background dark:text-foreground">
+    <div className="flex h-screen w-full flex-col bg-background text-foreground dark:bg-background dark:text-foreground">
       <main className="flex-1 bg-muted/40 p-6 dark:bg-muted">
         <TrelloContainer lists={lists} />
       </main>

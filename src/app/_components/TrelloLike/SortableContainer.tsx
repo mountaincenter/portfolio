@@ -22,8 +22,11 @@ const SortableContainer: React.FC<SortableContainerProps> = ({
     id,
   });
 
+  console.log("id", id);
+  console.log("items", items);
+
   return (
-    <Card className="bg-card text-card-foreground dark:bg-card dark:text-card-foreground">
+    <Card className="w-full bg-card text-card-foreground dark:bg-card dark:text-card-foreground">
       <CardHeader className="flex items-center justify-between bg-card-foreground px-4 py-3 text-card dark:bg-card-foreground dark:text-card">
         <h2 className="text-lg font-medium">{label}</h2>
         <Button variant="ghost" size="icon" className="rounded-full">

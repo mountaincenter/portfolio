@@ -3,14 +3,14 @@ import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import type { Task, User } from "@prisma/client";
 
-const Item = ({ task }: { task: Task & { user: User } }) => {
-  if (!task.user) {
+const Item = ({ task }: { task: (Task & { user: User }) | undefined }) => {
+  if (!task || !task.user) {
+    // task の存在チェックを追加
     return null;
   }
 
   const userName = task.user.name ?? "Unknown";
   const userInitial = task.user.name?.charAt(0) ?? "U";
-
   return (
     <div className="space-y-2 p-4">
       <div className="flex items-center justify-between">

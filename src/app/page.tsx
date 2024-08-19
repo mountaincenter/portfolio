@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Dnd from "@/app/_components/Dnd/page";
+import TrelloDnd from "@/app/_components/TrelloDnd/page";
 
 import { getServerAuthSession } from "@/server/auth";
 
@@ -6,12 +8,9 @@ export default async function Home() {
   const session = await getServerAuthSession();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center ">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8"></div>
-        <div className="flex flex-col items-center gap-2">
-          <div className="flex flex-col items-center justify-center gap-4">
-            <p className="text-center text-2xl text-white">
+    <div className="flex h-screen w-full flex-col bg-background text-foreground dark:bg-background dark:text-foreground">
+      <main className="flex-1 bg-muted/40 p-6 dark:bg-muted">
+        {/* <p className="text-center text-2xl text-white">
               {session && <span>Logged in as {session.user?.name}</span>}
             </p>
             <Link
@@ -19,10 +18,10 @@ export default async function Home() {
               className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
             >
               {session ? "Sign out" : "Sign in"}
-            </Link>
-          </div>
-        </div>
-      </div>
-    </main>
+            </Link> */}
+        <Dnd />
+        <TrelloDnd />
+      </main>
+    </div>
   );
 }

@@ -16,12 +16,12 @@ import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import SortableContainer from "./SortableContainer";
 import Item from "./Item";
 import { useDndItems } from "../../hooks/useDndItems";
-import type { Task, List, User } from "@prisma/client";
+import { useTaskMutation } from "../../hooks/useTaskMutation"; // useTaskMutationをインポート
+import type { Task, List, User, Status } from "@prisma/client";
 
 interface TrelloContainerProps {
   lists: (List & { tasks: (Task & { user: User })[] })[];
 }
-
 const TrelloContainer: React.FC<TrelloContainerProps> = ({ lists }) => {
   const [items, setItems] = useState<Record<string, (Task & { user: User })[]>>(
     {},
@@ -43,12 +43,32 @@ const TrelloContainer: React.FC<TrelloContainerProps> = ({ lists }) => {
   const { activeId, handleDragStart, handleDragOver, handleDragEnd } =
     useDndItems(items);
 
+  const { updateTask } = useTaskMutation();
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
   );
+
+  const handleDragEndWithMutation = (
+    activeId: string,
+    overId: string | null,
+  ) => {
+    if (!activeId || !overId) return;
+
+    const activeTask = Object.values(items)
+      .flat()
+      .find((task) => task.id.toString() === activeId);
+    const newStatus = overId as Status;
+
+    if (activeTask && activeTask.status !== newStatus) {
+      updateTask({ id: activeTask.id, status: newStatus });
+    }
+
+    handleDragEnd(activeId, overId);
+  };
 
   return (
     <DndContext
@@ -64,7 +84,7 @@ const TrelloContainer: React.FC<TrelloContainerProps> = ({ lists }) => {
         )
       }
       onDragEnd={(event: DragEndEvent) =>
-        handleDragEnd(
+        handleDragEndWithMutation(
           event.active.id.toString(),
           event.over?.id.toString() ?? null,
         )

@@ -27,7 +27,7 @@ const SessionProviderWrapper: React.FC<SessionProviderWrapperProps> = ({
           <div className="flex w-full justify-center">
             <Header session={session} />
           </div>
-          <div className="flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-4">
+          <div className="flex w-full flex-1 flex-col items-center justify-center px-4">
             {children}
           </div>
         </ThemeProvider>

@@ -1,6 +1,6 @@
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
-import { Todo, Status } from "./types";
+import type { Todo, Status } from "./types";
 import TodoItem from "./TodoItem";
 
 type TodoColumnProps = {

@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import {
   DndContext,
   useSensor,
   useSensors,
-  DragEndEvent,
+  type DragEndEvent,
   closestCorners,
   MouseSensor,
 } from "@dnd-kit/core";
-import { Todo, Status, Statuses } from "./types";
+import { type Todo, type Status, Statuses } from "./types";
 import TodoColumn from "./TodoColumn";
 import TodoForm from "./TodoForm";
 import TodoModal from "./TodoModal";

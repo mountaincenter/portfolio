@@ -8,11 +8,11 @@ import {
   useSensor,
   useSensors,
   closestCorners,
-  DragOverEvent,
+  type DragOverEvent,
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates, arrayMove } from "@dnd-kit/sortable";
 import SortableContainer from "./SortableContainer";
-import { User, Task, Status } from "./types";
+import { type User, type Task, type Status } from "./types";
 
 const user: User = { id: "1", name: "testuser" };
 
@@ -81,7 +81,7 @@ const Page = () => {
     if (!id) return null;
     return statuses.includes(id as Status)
       ? (id as Status)
-      : taskList.find((task) => task.id === id)?.status || null;
+      : taskList.find((task) => task.id === id)?.status ?? null;
   };
 
   const handleDragOver = (event: DragOverEvent) => {
@@ -106,12 +106,13 @@ const Page = () => {
   };
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCorners}
-      onDragOver={handleDragOver}
-    >
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
+      <SortableContainer key={"ALL"} taskList={taskList} label={"ALL"} />
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragOver={handleDragOver}
+      >
         {statuses.map((label) => (
           <SortableContainer
             key={label}
@@ -119,8 +120,8 @@ const Page = () => {
             label={label}
           />
         ))}
-      </div>
-    </DndContext>
+      </DndContext>
+    </div>
   );
 };
 

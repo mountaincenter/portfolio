@@ -1,4 +1,4 @@
-import React, { useState, FC } from "react";
+import React, { useState, type FC } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
 import { CircleCheckBig } from "lucide-react";

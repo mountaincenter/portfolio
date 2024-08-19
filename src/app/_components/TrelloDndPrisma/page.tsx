@@ -64,21 +64,23 @@ const Page = () => {
   };
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCorners}
-      onDragOver={handleDragOver}
-    >
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
-        {statuses.map((label) => (
-          <SortableContainer
-            key={label}
-            taskList={taskList.filter((task) => task.status === label)}
-            label={label}
-          />
-        ))}
-      </div>
-    </DndContext>
+    <>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragOver={handleDragOver}
+      >
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
+          {statuses.map((label) => (
+            <SortableContainer
+              key={label}
+              taskList={taskList.filter((task) => task.status === label)}
+              label={label}
+            />
+          ))}
+        </div>
+      </DndContext>
+    </>
   );
 };
 

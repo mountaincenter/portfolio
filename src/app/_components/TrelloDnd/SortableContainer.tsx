@@ -5,7 +5,7 @@ import { Card, CardHeader, CardContent } from "../ui/card";
 import { Plus } from "lucide-react";
 import { Button } from "../ui/button";
 import SortableItem from "./SortableItem";
-import { Task } from "./types";
+import type { Task } from "./types";
 
 interface SortableContainerProps {
   taskList: Task[];

@@ -10,11 +10,13 @@ import type { Task } from "./types";
 interface SortableContainerProps {
   taskList: Task[];
   label: string;
+  onSubmit: (updateTask: Task) => void;
 }
 
 const SortableContainer: React.FC<SortableContainerProps> = ({
   taskList,
   label,
+  onSubmit,
 }) => {
   const { setNodeRef } = useDroppable({ id: label });
 
@@ -31,11 +33,11 @@ const SortableContainer: React.FC<SortableContainerProps> = ({
         <CardContent className="space-y-4 p-4" ref={setNodeRef}>
           <SortableContext
             items={taskList.map((task) => task.id)}
-            id={label} // ここが重要
+            id={label}
             strategy={rectSortingStrategy}
           >
             {taskList.map((task) => (
-              <SortableItem key={task.id} task={task} />
+              <SortableItem key={task.id} task={task} onSubmit={onSubmit} />
             ))}
           </SortableContext>
         </CardContent>

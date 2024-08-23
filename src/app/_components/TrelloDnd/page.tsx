@@ -22,7 +22,7 @@ const tasks: Task[] = [
     id: "1",
     title: "Task 1",
     description: "Content 1",
-    dueDate: new Date(2024, 7, 15), // 8月15日 (monthは0-indexedなので7)
+    dueDate: new Date(2024, 7, 15), // 8月15日
     userId: user.id,
     status: "Incomplete",
     user: user,
@@ -70,8 +70,16 @@ const statuses: Status[] = ["Incomplete", "Progress", "Done"];
 const Page = () => {
   const [taskList, setTaskList] = useState<Task[]>(tasks);
 
+  const onSubmit = (updatedTask: Task) => {
+    setTaskList((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === updatedTask.id ? updatedTask : task,
+      ),
+    );
+  };
+
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }), // Ensure drag only starts after moving 5px
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
@@ -111,9 +119,14 @@ const Page = () => {
   };
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 p-4">
       <div>
-        <SortableContainer key={"ALL"} taskList={taskList} label={"ALL"} />
+        <SortableContainer
+          key={"ALL"}
+          taskList={taskList}
+          label={"ALL"}
+          onSubmit={onSubmit}
+        />
         <CreateTaskForm onAddTask={addTask} currentUser={user} />
       </div>
       <DndContext
@@ -126,6 +139,7 @@ const Page = () => {
             key={label}
             taskList={taskList.filter((task) => task.status === label)}
             label={label}
+            onSubmit={onSubmit}
           />
         ))}
       </DndContext>

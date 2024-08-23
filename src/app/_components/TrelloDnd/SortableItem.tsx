@@ -2,15 +2,17 @@ import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Item from "./Item";
-import { Task } from "./types";
+import type { Task } from "./types";
 
 interface SortableItemProps {
   task: Task;
+  onSubmit: (updateTask: Task) => void;
 }
 
-const SortableItem: React.FC<SortableItemProps> = ({ task }) => {
+const SortableItem: React.FC<SortableItemProps> = ({ task, onSubmit }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: task.id });
+
   return (
     <div
       ref={setNodeRef}
@@ -19,7 +21,7 @@ const SortableItem: React.FC<SortableItemProps> = ({ task }) => {
       {...attributes}
       {...listeners}
     >
-      <Item task={task} />
+      <Item task={task} onSubmit={onSubmit} />
     </div>
   );
 };

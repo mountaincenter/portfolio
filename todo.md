@@ -10,22 +10,11 @@
 - [ ] DM機能（双方向でのやり取りができるようにする）
 - [ ] 本番環境Vercel/VercelStorage
 
-8/10・11
-(休み)
+8/20(火) 代田22-1 21:東北沢13-22
 
-- [x] 掃除
-- [x] 洗濯
-- [x] TrelloLikeにmutationを実装
-- [ ] Storybookを実装
-- [ ] layoutを修正
-- [x] 料理
-  - [x] [茄子のパスタ](https://www.youtube.com/watch?v=D0H2kLiZY68&t=31s)
-  - [ ] [鉄板ながいも](https://www.youtube.com/watch?v=-fUhy1LDkio&t=127s)
-  - [x] 卵消費
-  - [x] オクラ長芋などなど
-  - [x] 冷蔵庫をできるだけからにする
-
-8/12 東北沢13-22
-
-- [ ] layoutを修正
-- [ ] TrelloLikeを修正
+- [ ] TrelloDndのedit(isEdit)機能の実装
+- [ ] TrelloDndのarchive/delete機能の実装
+- [ ] TrelloDndPrismaでバックエンドの連携
+- [ ] storybookを実装して(全体に統一感を出す)
+- [ ] Chat機能の実装
+- [ ] 本番環境

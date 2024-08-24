@@ -5,9 +5,10 @@ import type { Task, User } from "@prisma/client";
 
 interface ItemProps {
   task: Task & { user: User };
+  onSubmit: (updateTask: Task) => void;
 }
 
-const Item: React.FC<ItemProps> = ({ task }) => {
+const Item: React.FC<ItemProps> = ({ task, onSubmit }) => {
   console.log(task);
   const statusValue = {
     state: "",

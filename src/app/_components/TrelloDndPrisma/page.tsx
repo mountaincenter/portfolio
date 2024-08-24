@@ -35,6 +35,10 @@ const Page = () => {
     useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
   );
 
+  const onSubmit = () => {
+    console.log("onSubmit");
+  };
+
   const findColumn = (id: string | null): Status | null => {
     if (!id) return null;
     return statuses.includes(id as Status)
@@ -76,6 +80,7 @@ const Page = () => {
               key={label}
               taskList={taskList.filter((task) => task.status === label)}
               label={label}
+              onSubmit={onSubmit}
             />
           ))}
         </div>

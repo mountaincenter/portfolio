@@ -1,90 +1,49 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import {
-  DndContext,
-  KeyboardSensor,
-  PointerSensor,
-  MouseSensor,
-  useSensor,
-  useSensors,
-  closestCorners,
-  type DragOverEvent,
-} from "@dnd-kit/core";
-import { sortableKeyboardCoordinates, arrayMove } from "@dnd-kit/sortable";
-import SortableContainer from "./SortableContainer";
-import type { Task, User, Status } from "@prisma/client";
-import { useTaskMutation } from "@/app/hooks/useTaskMutation";
+import React from "react";
+import { useDroppable } from "@dnd-kit/core";
+import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
+import { Card, CardHeader, CardContent } from "../ui/card";
+import { Plus } from "lucide-react";
+import { Button } from "../ui/button";
+import SortableItem from "./SortableItem";
+import type { Task, User } from "@prisma/client";
 
-const statuses: (Status | "ALL")[] = ["ALL", "INCOMPLETE", "PROGRESS", "DONE"];
+interface SortableContainerProps {
+  taskList: (Task & { user: User })[];
+  label: string;
+  onSubmit: (updateTask: Task) => void;
+}
 
-const Page = () => {
-  const { tasks } = useTaskMutation();
-  console.log("tasks", tasks);
-  const [taskList, setTaskList] = useState<(Task & { user: User })[]>([]);
-
-  useEffect(() => {
-    if (tasks.length > 0) {
-      setTaskList(tasks);
-    }
-  }, [tasks]);
-
-  console.log("taskListPage:", taskList);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-    useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
-  );
-
-  const findColumn = (id: string | null): Status | null => {
-    if (!id) return null;
-    return statuses.includes(id as Status)
-      ? (id as Status)
-      : taskList.find((task) => task.id.toString() === id)?.status ?? null;
-  };
-
-  const handleDragOver = (event: DragOverEvent) => {
-    const { active, over } = event;
-
-    if (!over || active.id === over.id) return;
-
-    const activeColumn = findColumn(active.id.toString());
-    const overColumn = findColumn(over.id.toString());
-
-    if (activeColumn && overColumn && activeColumn !== overColumn) {
-      const oldIndex = taskList.findIndex((task) => task.id === active.id);
-      const newIndex = taskList.findIndex((task) => task.id === over.id);
-
-      const newTasks = arrayMove(taskList, oldIndex, newIndex);
-      const updatedTaskList = newTasks.map((task) =>
-        task.id === active.id ? { ...task, status: overColumn } : task,
-      );
-
-      setTaskList(updatedTaskList);
-    }
-  };
+const SortableContainer: React.FC<SortableContainerProps> = ({
+  taskList,
+  label,
+  onSubmit,
+}) => {
+  const { setNodeRef } = useDroppable({ id: label });
 
   return (
-    <>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragOver={handleDragOver}
-      >
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
-          {statuses.slice(1).map((label) => (
-            <SortableContainer
-              key={label}
-              taskList={taskList.filter((task) => task.status === label)}
-              label={label}
-            />
-          ))}
-        </div>
-      </DndContext>
-    </>
+    <div>
+      <Card className="w-full bg-card text-card-foreground dark:bg-card dark:text-card-foreground">
+        <CardHeader className="flex items-center justify-between bg-card-foreground px-4 py-3 text-card dark:bg-card-foreground dark:text-card">
+          <h2 className="text-lg font-medium">{label}</h2>
+          <Button variant="ghost" size="icon" className="rounded-full">
+            <Plus className="h-5 w-5" />
+            <span className="sr-only">Add new task</span>
+          </Button>
+        </CardHeader>
+        <CardContent className="space-y-4 p-4" ref={setNodeRef}>
+          <SortableContext
+            items={taskList.map((task) => task.id)}
+            id={label}
+            strategy={rectSortingStrategy}
+          >
+            {taskList.map((task) => (
+              <SortableItem key={task.id} task={task} onSubmit={onSubmit} />
+            ))}
+          </SortableContext>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
-export default Page;
+export default SortableContainer;

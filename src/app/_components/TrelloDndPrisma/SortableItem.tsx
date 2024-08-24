@@ -6,9 +6,10 @@ import type { Task, User } from "@prisma/client";
 
 interface SortableItemProps {
   task: Task & { user: User };
+  onSubmit: (updateTask: Task) => void;
 }
 
-const SortableItem: React.FC<SortableItemProps> = ({ task }) => {
+const SortableItem: React.FC<SortableItemProps> = ({ task, onSubmit }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: task.id });
   return (
@@ -19,7 +20,7 @@ const SortableItem: React.FC<SortableItemProps> = ({ task }) => {
       {...attributes}
       {...listeners}
     >
-      <Item task={task} />
+      <Item task={task} onSubmit={onSubmit} />
     </div>
   );
 };

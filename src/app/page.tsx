@@ -20,9 +20,9 @@ export default async function Home() {
         >
           {session ? "Sign out" : "Sign in"}
         </Link> */}
-        <Dnd />
+        {/* <Dnd /> */}
         <TrelloDnd />
-        {/* <TrelloDndPrisma /> */}
+        <TrelloDndPrisma />
       </main>
     </div>
   );

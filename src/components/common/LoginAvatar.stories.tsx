@@ -16,16 +16,19 @@ export const SignedIn: Story = {
   args: {
     session: mockSession,
   },
+  render: (args) => <LoginAvatar {...args} />,
 };
 
 export const SignedInWithoutImage: Story = {
   args: {
     session: mockSessionWithoutImage,
   },
+  render: (args) => <LoginAvatar {...args} />,
 };
 
 export const SignedOut: Story = {
   args: {
     session: null,
   },
+  render: (args) => <LoginAvatar {...args} />,
 };

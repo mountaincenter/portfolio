@@ -1,11 +1,11 @@
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 
 export const mockSession: Session = {
   user: {
     id: "1",
     name: "John Doe",
     email: "john.doe@example.com",
-    image: "https://via.placeholder.com/150",
+    image: "https://picsum.photos/400",
   },
   expires: "2023-12-31T23:59:59.999Z",
 };

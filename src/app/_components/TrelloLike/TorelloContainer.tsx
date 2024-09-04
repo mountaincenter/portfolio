@@ -17,12 +17,12 @@ import SortableContainer from "./SortableContainer";
 import Item from "./Item";
 import { useDndItems } from "../../hooks/useDndItems";
 import { useTaskMutation } from "../../hooks/useTaskMutation"; // useTaskMutationをインポート
-import type { Task, List, User, Status } from "@prisma/client";
+import type { Task, User, Status } from "@prisma/client";
 
 interface TrelloContainerProps {
-  lists: (List & { tasks: (Task & { user: User })[] })[];
+  tasks: (Task & { user: User })[];
 }
-const TrelloContainer: React.FC<TrelloContainerProps> = ({ lists }) => {
+const TrelloContainer: React.FC<TrelloContainerProps> = () => {
   const [items, setItems] = useState<Record<string, (Task & { user: User })[]>>(
     {},
   );

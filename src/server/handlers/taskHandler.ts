@@ -21,7 +21,6 @@ export const taskHandler = {
     dueDate?: Date;
     status: Status;
     userId: string;
-    listId: number;
   }): Promise<Task> {
     return await prisma.task.create({
       data: {
@@ -30,7 +29,6 @@ export const taskHandler = {
         dueDate: data.dueDate,
         status: data.status,
         userId: data.userId,
-        listId: data.listId,
       },
     });
   },

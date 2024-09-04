@@ -10,7 +10,6 @@ const baseTaskSchema = z.object({
   dueDate: z.string().optional(),
   status: z.nativeEnum(Status),
   userId: z.string(),
-  listId: z.number(),
 });
 
 const createTaskSchema = baseTaskSchema;
